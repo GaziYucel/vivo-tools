@@ -19,10 +19,13 @@ sed -i "s#<app-name>vivo</app-name>#<app-name>${appName}</app-name>#g" $settings
 sed -i "s#<vivo-dir>/usr/local/vivo/home</vivo-dir>#<vivo-dir>/opt/${appName}/VIVO/home</vivo-dir>#g" $settingsFile
 sed -i "s#<tomcat-dir>/usr/local/tomcat</tomcat-dir>#<tomcat-dir>${tomcatDir}</tomcat-dir>#g" $settingsFile
 
-cp home/config/example.runtime.properties home/config/runtime.properties
-cp home/config/example.applicationSetup.n3 home/config/applicationSetup.n3
+mkdir VIVO/home/config
 
-mvn install -s VIVO/installer/example-settings.xml
+cp VIVO/home/src/main/resources/config/example.runtime.properties VIVO/home/config/runtime.properties
+cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 VIVO/home/config/applicationSetup.n3
+
+cd VIVO || exit
+mvn install -s installer/example-settings.xml
 
 # set permissions
 sudo chown -R tomcat:tomcat $appDir
