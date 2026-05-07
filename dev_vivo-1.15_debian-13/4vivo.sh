@@ -21,8 +21,10 @@ sed -i "s#<tomcat-dir>/usr/local/tomcat</tomcat-dir>#<tomcat-dir>${tomcatDir}</t
 
 mkdir VIVO/home/config
 
-cp VIVO/home/src/main/resources/config/example.runtime.properties VIVO/home/config/runtime.properties
-cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 VIVO/home/config/applicationSetup.n3
+cp VIVO/home/src/main/resources/config/example.runtime.properties \
+   VIVO/home/config/runtime.properties
+cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 \
+   VIVO/home/config/applicationSetup.n3
 
 cd VIVO || exit
 mvn install -s installer/example-settings.xml
@@ -30,10 +32,12 @@ mvn install -s installer/example-settings.xml
 # set permissions
 sudo chown -R tomcat:tomcat $appDir
 sudo chmod 777 -R $appDir
-sudo chown -R tomcat:tomcat tomcatDir
-sudo chmod 777 -R tomcatDir
+sudo chown -R tomcat:tomcat $tomcatDir
+sudo chmod 777 -R $tomcatDir
 
 # instructions
+echo "VIVO deployment completed"
 echo "sudo systemctl restart tomcat"
+echo "Open: http://localhost:8080/vivo-1.15"
 echo "vivo_root@mydomain.edu"
 echo "rootPassword"
