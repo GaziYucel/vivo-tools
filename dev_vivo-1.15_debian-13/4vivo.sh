@@ -19,17 +19,15 @@ sed -i "s#<app-name>vivo</app-name>#<app-name>${appName}</app-name>#g" $settings
 sed -i "s#<vivo-dir>/usr/local/vivo/home</vivo-dir>#<vivo-dir>/opt/${appName}/VIVO/home</vivo-dir>#g" $settingsFile
 sed -i "s#<tomcat-dir>/usr/local/tomcat</tomcat-dir>#<tomcat-dir>${tomcatDir}</tomcat-dir>#g" $settingsFile
 
+mkdir VIVO/home/config
+
 cp VIVO/home/src/main/resources/config/example.runtime.properties \
-   VIVO/home/src/main/resources/config/runtime.properties
-
+   VIVO/home/config/runtime.properties
 cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 \
-   VIVO/home/src/main/resources/config/applicationSetup.n3
+   VIVO/home/config/applicationSetup.n3
 
-mvn install -s VIVO/installer/example-settings.xml
-
-# Start Solr
-$solrDir/bin/solr start
-sleep 10
+cd VIVO || exit
+mvn install -s installer/example-settings.xml
 
 # set permissions
 sudo chown -R tomcat:tomcat $appDir
@@ -37,11 +35,9 @@ sudo chmod 777 -R $appDir
 sudo chown -R tomcat:tomcat $tomcatDir
 sudo chmod 777 -R $tomcatDir
 
-# Restart Tomcat
-sudo systemctl restart tomcat
-
 # instructions
 echo "VIVO deployment completed"
+echo "sudo systemctl restart tomcat"
 echo "Open: http://localhost:8080/vivo-1.15"
 echo "vivo_root@mydomain.edu"
 echo "rootPassword"
