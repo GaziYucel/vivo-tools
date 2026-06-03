@@ -8,8 +8,10 @@ appDir="/opt/${appName}"
 settingsFile="/opt/${appName}/VIVO/installer/example-settings.xml"
 tomcatDir="/opt/tomcat"
 
-sudo mkdir $appDir
-sudo chmod 777 -R $appDir
+sudo mkdir -p $appDir
+sudo chown tomcat:tomcat $appDir
+sudo chmod 777 $appDir
+
 cd $appDir || exit
 
 git clone https://github.com/vivo-project/Vitro.git Vitro -b $branch
@@ -31,9 +33,9 @@ mvn install -s installer/example-settings.xml
 
 # set permissions
 sudo chown -R tomcat:tomcat $appDir
-sudo chmod 777 -R $appDir
+sudo chmod 775 -R $appDir
 sudo chown -R tomcat:tomcat $tomcatDir
-sudo chmod 777 -R $tomcatDir
+sudo chmod 775 -R $tomcatDir
 
 # instructions
 echo "VIVO deployment completed"

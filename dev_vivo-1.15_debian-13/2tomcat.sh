@@ -5,8 +5,15 @@ sudo echo "$(basename "$0")"
 version="9.0.117"
 tomcatDir="/opt/tomcat"
 
+# create user
+if ! id -u tomcat >/dev/null 2>&1; then
+  sudo useradd -r -m -U -d $tomcatDir -s /bin/false tomcat
+fi
+
 sudo mkdir -p $tomcatDir
-sudo chmod 777 -R $tomcatDir
+sudo chown tomcat:tomcat $tomcatDir
+sudo chmod 777 $tomcatDir
+
 cd $tomcatDir || exit
 
 wget "https://dlcdn.apache.org/tomcat/tomcat-9/v${version}/bin/apache-tomcat-${version}.tar.gz"
@@ -30,15 +37,11 @@ Group=tomcat
 WantedBy=multi-user.target
 EOF
 
-# create user
-sudo useradd -r -m -U -d $tomcatDir -s /bin/false tomcat
-
 # set permissions
 sudo chown -R tomcat:tomcat $tomcatDir
-sudo chmod 777 -R $tomcatDir
-sudo chmod +x $tomcatDir/bin/startup.sh
-sudo chmod +x $tomcatDir/bin/shutdown.sh
+sudo chmod 775 -R $tomcatDir
 
 # instructions
+echo "sudo usermod -aG tomcat $USER && newgrp tomcat"
 echo "sudo systemctl daemon-reload"
 echo "sudo systemctl enable --now tomcat"
