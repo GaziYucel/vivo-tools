@@ -10,7 +10,7 @@ sudo apt install git -y
 ./4vivo.sh
 
 # start Solr
-/opt/solr/bin/solr start
+sudo -u tomcat /opt/solr/bin/solr start
 sleep 10
 
 # restart Tomcat

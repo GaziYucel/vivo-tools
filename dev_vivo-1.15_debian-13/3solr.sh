@@ -7,7 +7,9 @@ solrDir="/opt/solr"
 vivoSolrBranch="solr-8.11"
 
 sudo mkdir $solrDir
-sudo chmod 777 -R $solrDir
+sudo chown tomcat:tomcat $solrDir
+sudo chmod 777 $solrDir
+
 cd $solrDir || exit
 
 # solr
@@ -18,5 +20,10 @@ tar xzvf solr-${version}.tgz -C . --strip-components=1
 git clone https://github.com/vivo-project/vivo-solr vivo-solr -b $vivoSolrBranch
 cp -a vivo-solr/vivocore $solrDir/server/solr/vivocore
 
+# set permissions
+sudo chown -R tomcat:tomcat $solrDir
+sudo chmod 775 -R $solrDir
+
 # instructions
-echo "${solrDir}/bin/solr start"
+echo "sudo -u tomcat ${solrDir}/bin/solr start"
+echo "${solrDir}/bin/solr stop"
