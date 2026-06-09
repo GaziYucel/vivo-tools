@@ -40,6 +40,6 @@ sudo chmod 775 -R $tomcatDir
 # instructions
 echo "VIVO deployment completed"
 echo "sudo systemctl restart tomcat"
-echo "Open: http://localhost:8080/vivo-1.15"
+echo "Open: http://localhost:8080/${appName}"
 echo "vivo_root@mydomain.edu"
 echo "rootPassword"
