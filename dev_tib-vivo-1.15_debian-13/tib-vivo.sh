@@ -24,7 +24,7 @@ sed -i "s#<app-name>vivo</app-name>"\
 "#<app-name>${appName}</app-name>#g" $settingsFile
 
 sed -i "s#<vivo-dir>/tib/app/vivo/data/vivo</vivo-dir>"\
-"#<vivo-dir>/opt/${appName}/VIVO/home</vivo-dir>#g" $settingsFile
+"#<vivo-dir>${appDir}/VIVO/home</vivo-dir>#g" $settingsFile
 
 sed -i "s#<tomcat-dir>/Program Files/Apache Software Foundation/Tomcat 9.0</tomcat-dir>"\
 "#<tomcat-dir>${tomcatDir}</tomcat-dir>#g" $settingsFile
@@ -46,6 +46,9 @@ cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 \
 
 cd VIVO || exit
 mvn install -s ../project-settings.xml
+
+# miscellaneous
+mkdir -p "${tomcatDir}/webapps/${appName}/WEB-INF/resources/home-files"
 
 # set permissions
 sudo chown -R tomcat:tomcat $appDir
