@@ -2,13 +2,13 @@
 set -x #echo on
 sudo echo "$(basename "$0")"
 
-appName="tib-vivo-1.15"
+appName="rel-1.15-maint"
 appDir="/opt/${appName}"
 tomcatDir="/opt/tomcat"
 settingsFile="/opt/${appName}/project-settings.xml"
-branch="develop-1.15"
-vitroBranch="1.15.1-snapshot-3"
-vivoBranch="1.15.1-snapshot-3"
+branch="rel-1.15-maint"
+vitroBranch="rel-1.15-maint"
+vivoBranch="rel-1.15-maint"
 
 sudo mkdir -p $appDir
 sudo chown tomcat:tomcat $appDir
@@ -16,9 +16,7 @@ sudo chmod 777 $appDir
 
 cd $appDir || exit
 
-git clone https://git.tib.eu/OSL/VIVO/vivo_1.12_project_template.git -b $branch .
-
-sed -i "s#git@git.tib.eu:#https://git.tib.eu/#g" .gitmodules
+git clone https://git.tib.eu/OSL/VIVO/VIVO_PROJECT_TEMPLATE.git -b $branch .
 
 sed -i "s#<app-name>vivo</app-name>"\
 "#<app-name>${appName}</app-name>#g" $settingsFile
