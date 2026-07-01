@@ -9,7 +9,6 @@ appDir="/opt/${appName}"                              # Target installation dire
 tomcatDir="/opt/tomcat"                               # Tomcat installation directory to deploy webapp to
 settingsFile="/opt/${appName}/project-settings.xml"   # Path to the Maven/project settings file that will be edited
 
-
 # Create the application directory if it doesn't exist
 sudo mkdir -p "$appDir"
 
