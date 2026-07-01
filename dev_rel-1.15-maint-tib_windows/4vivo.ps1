@@ -57,8 +57,7 @@ if (-not (Test-Path $MiscDir)) {
 }
 
 # Final instructions printed for the operator
-Write-Host "`nVIVO deployment completed" -ForegroundColor Green
-Write-Host "Please restart the Tomcat service via Services.msc or Restart-Service tomcat"
+Write-Host "VIVO deployment completed"
 Write-Host "Open: http://localhost:8080/${AppName}"
 Write-Host "Username: vivo_root@mydomain.edu"
 Write-Host "Password: rootPassword"
