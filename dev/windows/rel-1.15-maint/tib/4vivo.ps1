@@ -11,12 +11,8 @@ $AppDir = "C:\opt\${AppName}"                            # Target installation d
 $TomcatDir = "C:\opt\tomcat"                             # Tomcat installation directory to deploy webapp to
 $SettingsFile = "${AppDir}\project-settings.xml"         # Path to the Maven/project settings file that will be edited
 
-Write-Host "Starting VIVO deployment for ${AppName}"
-
 # Create the application directory if it doesn't exist
-if (-not (Test-Path $AppDir)) {
-    New-Item -Path $AppDir -ItemType Directory -Force
-}
+if (-not (Test-Path $AppDir)) { New-Item -Path $AppDir -ItemType Directory -Force }
 
 # Move into the application directory
 Set-Location $AppDir
@@ -48,16 +44,11 @@ Copy-Item "VIVO\home\src\main\resources\config\example.applicationSetup.n3" "VIV
 
 # Build the VIVO module with Maven using the project-settings.xml
 Set-Location VIVO
-mvn install -s ..\project-settings.xml
-
-# miscellaneous
-$MiscDir = "${TomcatDir}\webapps\${AppName}\WEB-INF\resources\home-files"
-if (-not (Test-Path $MiscDir)) {
-    New-Item -Path $MiscDir -ItemType Directory -Force
-}
+mvn install -s $SettingsFile
 
 # Final instructions printed for the operator
 Write-Host "VIVO deployment completed"
+Write-Host "Please restart tomcat"
 Write-Host "Open: http://localhost:8080/${AppName}"
 Write-Host "Username: vivo_root@mydomain.edu"
 Write-Host "Password: rootPassword"

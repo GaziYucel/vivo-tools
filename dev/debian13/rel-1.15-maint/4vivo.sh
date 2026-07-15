@@ -3,11 +3,11 @@ set -x #echo on
 sudo echo "$(basename "$0")"
 
 # Configuration variables
-appName="rel-1.15-maint"                              # Application release name to deploy
-branch=$appName                                       # Application branch name to deploy
-appDir="/opt/${appName}"                              # Target installation directory for this app
-tomcatDir="/opt/tomcat"                               # Tomcat installation directory to deploy webapp to
-settingsFile="/opt/${appName}/project-settings.xml"   # Path to the Maven/project settings file that will be edited
+appName="rel-1.15-maint"                                             # Application release name to deploy
+branch=$appName                                                      # Application branch name to deploy
+appDir="/opt/${appName}"                                             # Target installation directory for this app
+tomcatDir="/opt/tomcat"                                              # Tomcat installation directory to deploy webapp to
+settingsFile="/opt/${appName}/VIVO/installer/example-settings.xml"   # Path to the Maven/project settings file that will be edited
 
 # Create the application directory if it doesn't exist
 sudo mkdir -p "$appDir"
@@ -22,20 +22,13 @@ sudo chmod 777 "$appDir"
 cd "$appDir" || exit 1
 
 # Clone the project template repository into the current directory and check out the specified branch
-git clone https://git.tib.eu/OSL/VIVO/VIVO_PROJECT_TEMPLATE.git -b $branch .
+git clone https://github.com/vivo-project/Vitro.git Vitro -b $branch
+git clone https://github.com/vivo-project/VIVO.git VIVO -b $branch
 
 # Update settings file
 sed -i "s#<app-name>vivo</app-name>#<app-name>${appName}</app-name>#g" $settingsFile
-sed -i "s#<vivo-dir>/tib/app/vivo/data/vivo</vivo-dir>#<vivo-dir>${appDir}/VIVO/home</vivo-dir>#g" $settingsFile
-sed -i "s#<tomcat-dir>/Program Files/Apache Software Foundation/Tomcat 9.0</tomcat-dir>#<tomcat-dir>${tomcatDir}</tomcat-dir>#g" $settingsFile
-
-# Initialize and update git submodules required by the project
-git submodule init
-git submodule update
-
-# Ensure submodules Vitro and VIVO are checked out to the desired branch
-git -C Vitro checkout $branch
-git -C VIVO checkout $branch
+sed -i "s#<vivo-dir>/usr/local/vivo/home</vivo-dir>#<vivo-dir>${appDir}/VIVO/home</vivo-dir>#g" $settingsFile
+sed -i "s#<tomcat-dir>/usr/local/tomcat</tomcat-dir>#<tomcat-dir>${tomcatDir}</tomcat-dir>#g" $settingsFile
 
 # Create configuration directory used by the VIVO application
 mkdir -p VIVO/home/config
@@ -48,10 +41,7 @@ cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 \
 
 # Build the VIVO module with Maven using the project-settings.xml
 cd VIVO || exit 1
-mvn install -s ../project-settings.xml
-
-# miscellaneous
-mkdir -p "${tomcatDir}/webapps/${appName}/WEB-INF/resources/home-files"
+mvn install -s settingsFile
 
 # Set permissions recursively so Tomcat can read/write where appropriate
 sudo chown -R tomcat:tomcat $appDir
