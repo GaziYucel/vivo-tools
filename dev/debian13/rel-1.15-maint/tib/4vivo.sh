@@ -48,7 +48,7 @@ cp VIVO/home/src/main/resources/config/example.applicationSetup.n3 \
 
 # Build the VIVO module with Maven using the project-settings.xml
 cd VIVO || exit 1
-mvn install -s settingsFile
+mvn install -s $settingsFile
 
 # Set permissions recursively so Tomcat can read/write where appropriate
 sudo chown -R tomcat:tomcat $appDir
